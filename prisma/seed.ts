@@ -1,9 +1,10 @@
-import { PrismaLibSql } from '@prisma/adapter-libsql'
+import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaClient } from '../app/generated/prisma/client'
 import bcrypt from 'bcryptjs'
 
-const url = process.env['DATABASE_URL'] ?? 'file:./prisma/dev.db'
-const adapter = new PrismaLibSql({ url })
+const connectionString = process.env['DATABASE_URL']
+if (!connectionString) throw new Error('DATABASE_URL 환경변수가 설정되지 않았습니다.')
+const adapter = new PrismaNeon({ connectionString })
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
@@ -92,7 +93,7 @@ async function main() {
     },
   })
 
-  console.log('✅ Seed data created successfully')
+  console.log('✅ Seed data created successfully (NeonDB)')
   console.log('계정 정보 (비밀번호: password123):')
   console.log(`  관리자: admin@childcare.kr`)
   console.log(`  재정이사: finance@childcare.kr`)

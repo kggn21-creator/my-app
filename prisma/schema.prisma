@@ -4,37 +4,37 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
+  id           String            @id @default(cuid())
+  email        String            @unique
   name         String
   passwordHash String
-  role         Role          @default(MEMBER)
+  role         Role              @default(MEMBER)
   subcommittee Subcommittee?
-  createdAt    DateTime      @default(now())
+  createdAt    DateTime          @default(now()) @db.Timestamptz(6)
   expenses     ExpenseRequest[]
   approvals    ApprovalHistory[]
 }
 
 model ExpenseRequest {
-  id           String          @id @default(cuid())
-  requestDate  DateTime        @default(now())
+  id           String            @id @default(cuid())
+  requestDate  DateTime          @default(now()) @db.Timestamptz(6)
   subcommittee Subcommittee
   itemName     String
   amount       Int
   purpose      String
-  plannedDate  DateTime
-  status       ExpenseStatus   @default(PENDING)
-  isDraft      Boolean         @default(false)
+  plannedDate  DateTime          @db.Timestamptz(6)
+  status       ExpenseStatus     @default(PENDING)
+  isDraft      Boolean           @default(false)
   requesterId  String
-  requester    User            @relation(fields: [requesterId], references: [id])
+  requester    User              @relation(fields: [requesterId], references: [id])
   attachments  Attachment[]
   approvals    ApprovalHistory[]
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  createdAt    DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime          @updatedAt @db.Timestamptz(6)
 }
 
 model Attachment {
@@ -45,7 +45,7 @@ model Attachment {
   fileSize         Int
   expenseRequestId String
   expenseRequest   ExpenseRequest @relation(fields: [expenseRequestId], references: [id], onDelete: Cascade)
-  uploadedAt       DateTime       @default(now())
+  uploadedAt       DateTime       @default(now()) @db.Timestamptz(6)
 }
 
 model ApprovalHistory {
@@ -56,7 +56,7 @@ model ApprovalHistory {
   actor            User           @relation(fields: [actorId], references: [id])
   expenseRequestId String
   expenseRequest   ExpenseRequest @relation(fields: [expenseRequestId], references: [id], onDelete: Cascade)
-  createdAt        DateTime       @default(now())
+  createdAt        DateTime       @default(now()) @db.Timestamptz(6)
 }
 
 enum Role {

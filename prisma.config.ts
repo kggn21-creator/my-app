@@ -9,6 +9,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // 마이그레이션은 Direct URL(connection pooler 미경유)로 실행
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });
