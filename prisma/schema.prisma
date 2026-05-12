@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  passwordHash String
+  role         Role          @default(MEMBER)
+  subcommittee Subcommittee?
+  createdAt    DateTime      @default(now())
+  expenses     ExpenseRequest[]
+  approvals    ApprovalHistory[]
+}
+
+model ExpenseRequest {
+  id           String          @id @default(cuid())
+  requestDate  DateTime        @default(now())
+  subcommittee Subcommittee
+  itemName     String
+  amount       Int
+  purpose      String
+  plannedDate  DateTime
+  status       ExpenseStatus   @default(PENDING)
+  isDraft      Boolean         @default(false)
+  requesterId  String
+  requester    User            @relation(fields: [requesterId], references: [id])
+  attachments  Attachment[]
+  approvals    ApprovalHistory[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Attachment {
+  id               String         @id @default(cuid())
+  fileName         String
+  filePath         String
+  mimeType         String
+  fileSize         Int
+  expenseRequestId String
+  expenseRequest   ExpenseRequest @relation(fields: [expenseRequestId], references: [id], onDelete: Cascade)
+  uploadedAt       DateTime       @default(now())
+}
+
+model ApprovalHistory {
+  id               String         @id @default(cuid())
+  action           ApprovalAction
+  comment          String?
+  actorId          String
+  actor            User           @relation(fields: [actorId], references: [id])
+  expenseRequestId String
+  expenseRequest   ExpenseRequest @relation(fields: [expenseRequestId], references: [id], onDelete: Cascade)
+  createdAt        DateTime       @default(now())
+}
+
+enum Role {
+  MEMBER
+  TEACHER
+  FINANCE_DIRECTOR
+  ADMIN
+}
+
+enum Subcommittee {
+  PROMOTION_EDUCATION
+  OPERATIONS
+  FINANCE
+  FACILITIES
+}
+
+enum ExpenseStatus {
+  PENDING
+  REVIEWING
+  APPROVED
+  COMPLETED
+  REJECTED
+}
+
+enum ApprovalAction {
+  SUBMITTED
+  REVIEWING
+  APPROVED
+  REJECTED
+  COMPLETED
+}

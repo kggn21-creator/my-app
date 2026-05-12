@@ -1,0 +1,31 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.errorAlert {
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-danger-light);
+  border: 1px solid var(--color-danger);
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.attachNote {
+  font-size: var(--text-xs);
+  color: var(--color-gray-500);
+  padding: var(--space-3);
+  background-color: var(--color-info-light);
+  border-radius: var(--radius-md);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-gray-200);
+}

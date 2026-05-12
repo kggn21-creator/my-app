@@ -1,0 +1,123 @@
+.navbar {
+  height: var(--navbar-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-gray-200);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-fixed);
+  backdrop-filter: blur(8px);
+}
+
+.inner {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary-600);
+  font-weight: var(--font-bold);
+  min-height: 44px;
+}
+
+.logoText {
+  font-size: var(--text-base);
+  color: var(--color-gray-900);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.authLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.loginLink {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  font-weight: var(--font-medium);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.loginLink:hover {
+  background-color: var(--color-gray-100);
+}
+
+.registerLink {
+  font-size: var(--text-sm);
+  color: #FFFFFF;
+  font-weight: var(--font-semibold);
+  background-color: var(--color-primary-600);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.registerLink:hover {
+  background-color: var(--color-primary-700);
+}
+
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.userName {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  font-weight: var(--font-medium);
+}
+
+.userRole {
+  font-size: var(--text-xs);
+  color: var(--color-gray-500);
+  margin-left: var(--space-1);
+}
+
+.navLink {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  font-weight: var(--font-medium);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color var(--transition-base);
+}
+.navLink:hover {
+  background-color: var(--color-gray-100);
+}
+
+.logoutBtn {
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+  font-weight: var(--font-medium);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background-color var(--transition-base);
+}
+.logoutBtn:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
