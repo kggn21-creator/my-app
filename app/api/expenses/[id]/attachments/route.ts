@@ -1,9 +1,7 @@
 import { NextRequest } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { randomUUID } from 'crypto'
+import { put } from '@vercel/blob'
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from '@/lib/constants'
 
 export async function POST(
@@ -34,31 +32,31 @@ export async function POST(
       return Response.json({ error: '파일을 선택해 주세요.' }, { status: 400 })
     }
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', id)
-    await mkdir(uploadDir, { recursive: true })
-
     const attachments = []
     for (const file of files) {
       if (!ALLOWED_MIME_TYPES.includes(file.type)) {
         return Response.json(
-          { error: `${file.name}: 허용되지 않는 파일 형식입니다.` },
+          { error: `${file.name}: 허용되지 않는 파일 형식입니다. (JPG, PNG, WEBP, PDF만 가능)` },
           { status: 400 }
         )
       }
       if (file.size > MAX_FILE_SIZE) {
-        return Response.json({ error: `${file.name}: 파일 크기는 10MB 이하여야 합니다.` }, { status: 400 })
+        return Response.json(
+          { error: `${file.name}: 파일 크기는 10MB 이하여야 합니다.` },
+          { status: 400 }
+        )
       }
 
-      const ext = path.extname(file.name)
-      const savedName = `${randomUUID()}${ext}`
-      const savedPath = path.join(uploadDir, savedName)
-      const buffer = Buffer.from(await file.arrayBuffer())
-      await writeFile(savedPath, buffer)
+      // Vercel Blob에 업로드 (서버리스 환경 대응)
+      const blob = await put(`expenses/${id}/${file.name}`, file, {
+        access: 'public',
+        addRandomSuffix: true,
+      })
 
       const attachment = await prisma.attachment.create({
         data: {
           fileName: file.name,
-          filePath: `/uploads/${id}/${savedName}`,
+          filePath: blob.url,
           mimeType: file.type,
           fileSize: file.size,
           expenseRequestId: id,
