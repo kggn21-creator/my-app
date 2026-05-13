@@ -82,7 +82,7 @@ export function AttachmentSection({ expenseId, attachments: initial, isOwner, st
               <span className={styles.icon} aria-hidden="true">📎</span>
               <div className={styles.info}>
                 <a
-                  href={att.filePath}
+                  href={`/api/blob?url=${encodeURIComponent(att.filePath)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.filename}
