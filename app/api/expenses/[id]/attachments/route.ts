@@ -20,7 +20,9 @@ export async function POST(
     return Response.json({ error: '신청을 찾을 수 없습니다.' }, { status: 404 })
   }
 
-  if (expense.requesterId !== session.user.id) {
+  const isOwner = expense.requesterId === session.user.id
+  const isAdmin = session.user.role === 'ADMIN'
+  if (!isOwner && !isAdmin) {
     return Response.json({ error: '접근 권한이 없습니다.' }, { status: 403 })
   }
 
@@ -36,7 +38,7 @@ export async function POST(
     for (const file of files) {
       if (!ALLOWED_MIME_TYPES.includes(file.type)) {
         return Response.json(
-          { error: `${file.name}: 허용되지 않는 파일 형식입니다. (JPG, PNG, WEBP, PDF만 가능)` },
+          { error: `${file.name}: 허용되지 않는 파일 형식입니다. (JPG, PNG, GIF, PDF, Excel, Word, HWP 가능)` },
           { status: 400 }
         )
       }

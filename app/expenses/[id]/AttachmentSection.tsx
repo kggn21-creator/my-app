@@ -21,7 +21,7 @@ interface Props {
   status: string
 }
 
-const EDITABLE_STATUSES = ['PENDING', 'DRAFT']
+const EDITABLE_STATUSES = ['PENDING', 'REVIEWING']
 
 export function AttachmentSection({ expenseId, attachments: initial, isOwner, status }: Props) {
   const [attachments, setAttachments] = useState(initial)
