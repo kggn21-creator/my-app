@@ -69,7 +69,8 @@ export async function POST(
 
     return Response.json({ attachments }, { status: 201 })
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
     console.error('[attachments POST]', error)
-    return Response.json({ error: '파일 업로드 중 오류가 발생했습니다.' }, { status: 500 })
+    return Response.json({ error: `파일 업로드 오류: ${message}` }, { status: 500 })
   }
 }
